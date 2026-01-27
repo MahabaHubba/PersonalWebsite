@@ -116,9 +116,10 @@ export default function PersonalPage() {
   const [isDark, setIsDark] = useState(true);
   const [expandedProject, setExpandedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState({});
-  const [activeSection, setActiveSection] = useState('about');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const projectRefs = useRef({});
+  const [activeSection, setActiveSection] = useState('hero');
+const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+const projectRefs = useRef({});
+const containerRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -130,30 +131,47 @@ export default function PersonalPage() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['about', 'experience', 'projects', 'skills'];
-      const scrollPosition = window.scrollY + 200;
+  const container = containerRef.current;
+  if (!container) return;
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
+  const handleScroll = () => {
+    const sections = ['hero', 'about', 'experience', 'projects', 'skills'];
+    const containerScroll = container.scrollTop;
+    const containerHeight = container.clientHeight;
+
+    for (const sectionId of sections) {
+      const element = sectionId === 'hero' 
+        ? container.querySelector('section:first-of-type')
+        : document.getElementById(sectionId);
+      
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top;
+        const elementBottom = rect.bottom;
+        
+        // Check if section is in viewport (with some tolerance)
+        if (elementTop < containerHeight / 2 && elementBottom > containerHeight / 2) {
+          setActiveSection(sectionId);
+          break;
         }
       }
-    };
+    }
+  };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  container.addEventListener('scroll', handleScroll);
+  handleScroll(); // Initial check
+  
+  return () => container.removeEventListener('scroll', handleScroll);
+}, []);
 
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
+  if (sectionId === 'hero') {
+    containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  const element = document.getElementById(sectionId);
+  element?.scrollIntoView({ behavior: 'smooth' });
+};
 
   const toggleProject = (projectId) => {
     const isExpanding = expandedProject !== projectId;
@@ -184,7 +202,7 @@ export default function PersonalPage() {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-white'} relative snap-y snap-mandatory overflow-y-scroll h-screen`}>
+      <div ref={containerRef} className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-white'} relative snap-y snap-mandatory overflow-y-scroll h-screen`}>
       {/* Spotlight effect */}
       <div 
         className="pointer-events-none fixed inset-0 z-30 transition duration-300"
@@ -246,40 +264,94 @@ export default function PersonalPage() {
       `}</style>
 
       {/* Fixed Navigation */}
-      <nav className={`fixed top-0 w-full z-50 backdrop-blur-md ${
-        isDark ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-gray-200'
-      } border-b`}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className={`text-2xl font-bold ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
-              Mohibul Haque
-            </h1>
-            <div className="flex items-center gap-8">
-              {['about', 'experience', 'projects', 'skills'].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`nav-link capitalize ${
-                    activeSection === section
-                      ? isDark ? 'text-indigo-400' : 'text-indigo-600'
-                      : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-gray-600 hover:text-gray-900'
-                  } ${activeSection === section ? 'active' : ''}`}
+<nav className={`fixed top-0 w-full z-50 backdrop-blur-md ${
+  isDark ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-gray-200'
+} border-b`}>
+  <div className="max-w-7xl mx-auto px-6 py-4">
+    <div className="flex justify-between items-center">
+      <h1 className={`text-2xl font-bold ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
+        Mohibul Haque
+      </h1>
+      <div className="flex items-center gap-8">
+        {[
+          { id: 'hero', label: 'home' },
+          { id: 'about', label: 'about' },
+          { id: 'experience', label: 'experience' },
+          { id: 'projects', label: 'projects' },
+          { id: 'skills', label: 'skills' }
+        ].map((section) => (
+          <button
+            key={section.id}
+            onClick={() => scrollToSection(section.id)}
+            className={`nav-link capitalize ${
+              activeSection === section.id
+                ? isDark ? 'text-indigo-400' : 'text-indigo-600'
+                : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-gray-600 hover:text-gray-900'
+            } ${activeSection === section.id ? 'active' : ''}`}
+          >
+            {section.label}
+          </button>
+        ))}
+        
+        {/* Toggle Switch */}
+        <div className="relative">
+          <div 
+            onClick={() => setIsDark(!isDark)}
+            className={`relative w-16 h-8 rounded-full cursor-pointer transition-colors duration-300 ${
+              isDark ? 'bg-slate-700' : 'bg-gray-300'
+            }`}
+          >
+            {/* Sliding Button */}
+            <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300 flex items-center justify-center ${
+              isDark ? 'translate-x-8' : 'translate-x-0'
+            }`}>
+              {/* Icon inside the sliding button */}
+              {isDark ? (
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                  className="text-indigo-600"
                 >
-                  {section}
-                </button>
-              ))}
-              <button 
-                onClick={() => setIsDark(!isDark)}
-                className={`p-2 rounded-lg ${
-                  isDark ? 'bg-slate-800 hover:bg-slate-700' : 'bg-gray-100 hover:bg-gray-200'
-                } transition-all text-2xl`}
-              >
-                {isDark ? '☀️' : '🌙'}
-              </button>
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+              ) : (
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                  className="text-yellow-500"
+                >
+                  <circle cx="12" cy="12" r="5"/>
+                  <line x1="12" y1="1" x2="12" y2="3"/>
+                  <line x1="12" y1="21" x2="12" y2="23"/>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                  <line x1="1" y1="12" x2="3" y2="12"/>
+                  <line x1="21" y1="12" x2="23" y2="12"/>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+              )}
             </div>
           </div>
         </div>
-      </nav>
+      </div>
+    </div>
+  </div>
+</nav>
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-6 pt-20 snap-start snap-always">
@@ -318,13 +390,31 @@ export default function PersonalPage() {
             About Me
           </h2>
           <div className={`rounded-xl p-8 ${isDark ? 'bg-slate-800/50' : 'bg-gray-50'}`}>
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-slate-300' : 'text-gray-600'}`}>
-              I'm a software engineer with experience building full-stack and cloud-based applications 
-              using Java Spring, React, and the MERN stack. With a background as an Exercise Physiologist, 
-              I bring strong analytical thinking, stakeholder communication, and outcome-driven problem-solving 
-              into software development. I enjoy working on scalable systems, automation, and user-focused 
-              solutions that create real-world impact.
-            </p>
+            <p className={`text-lg w-full mb-8 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
+
+  I am a software engineer with hands-on experience designing, developing, and deploying full-stack and 
+  cloud-based applications using Java Spring (Spring Boot, REST APIs), React, and the MERN stack. My work 
+  spans building scalable backend services, implementing secure authentication and authorization flows, 
+  and integrating relational and NoSQL databases such as MySQL and MongoDB using ORM frameworks like 
+  Hibernate and Mongoose. I have experience working with modern frontend architectures, leveraging React 
+  hooks, component-based design, state management, and API-driven UI development using Axios and GraphQL.
+  
+  <br /><br />
+  
+  On the infrastructure side, I have deployed applications to cloud environments, utilizing services such 
+  as AWS and GCP, containerization with Docker, and CI/CD pipelines to automate testing and delivery. I am 
+  familiar with microservices-oriented design, RESTful communication, and observability tooling including 
+  Prometheus, Grafana, and Splunk to monitor system performance and application health.
+  
+  <br /><br />
+  
+  With a professional background as an Exercise Physiologist, I bring a strong analytical mindset, 
+  evidence-based decision making, and stakeholder-focused communication into software development. This 
+  cross-disciplinary experience enables me to translate complex requirements into reliable technical 
+  solutions, optimize systems based on measurable outcomes, and collaborate effectively within 
+  cross-functional teams to deliver maintainable, high-quality software.
+</p>
+
           </div>
         </div>
       </section>
@@ -546,32 +636,102 @@ export default function PersonalPage() {
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="px-6 py-20 snap-start snap-always min-h-screen flex items-center">
-        <div className="max-w-4xl mx-auto">
-          <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-            
-            Skills & Technologies
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {['Java', 'Javascript', 'PHP', 'Python', 'SQL', 'HTML', 'CSS', 'PostgreSQL', 'MongoDB', 'UNIX', 'Git', 'Render','AWS', 'Cloudflare', 'React', 'Spring', 'Laravel', 'Splunk', 'Prometheus', 'Grafana'].map((skill) => (
-              <div 
-                key={skill}
-                className={`p-4 rounded-lg text-center ${
-                  isDark ? 'bg-slate-800/50 text-slate-300' : 'bg-gray-50 text-gray-700'
-                }`}
-              >
-                {skill}
-              </div>
-            ))}
-          </div>
+     {/* Skills Section */}
+<section id="skills" className="px-6 py-20 snap-start snap-always min-h-screen flex items-center">
+  <div className="max-w-4xl mx-auto w-full">
+    <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
+      Skills & Technologies
+    </h2>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+      {['Java', 'Javascript', 'PHP', 'Python', 'SQL', 'HTML', 'CSS', 'PostgreSQL', 'MongoDB', 'UNIX', 'Git', 'Render','AWS', 'Cloudflare', 'React', 'Spring', 'Laravel', 'Splunk', 'Prometheus', 'Grafana'].map((skill) => (
+        <div 
+          key={skill}
+          className={`p-4 rounded-lg text-center ${
+            isDark ? 'bg-slate-800/50 text-slate-300' : 'bg-gray-50 text-gray-700'
+          }`}
+        >
+          {skill}
         </div>
-      </section>
+      ))}
+    </div>
+    
+    {/* Social Links */}
+    <div className="flex justify-center items-center gap-6 mt-12">
+      {/* GitHub */}
+      <a 
+        href="https://github.com/MahabaHubba" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className={`p-3 rounded-lg transition-all ${
+          isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
+        }`}
+        aria-label="GitHub"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="28" 
+          height="28" 
+          viewBox="0 0 24 24" 
+          fill="currentColor"
+        >
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
 
-      {/* Footer */}
-      <footer className={`py-8 text-center ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
-        <p>Built with React & Tailwind CSS</p>
-      </footer>
+      {/* LinkedIn */}
+      <a 
+        href="https://www.linkedin.com/in/mohihaque/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className={`p-3 rounded-lg transition-all ${
+          isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
+        }`}
+        aria-label="LinkedIn"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="28" 
+          height="28" 
+          viewBox="0 0 24 24" 
+          fill="currentColor"
+        >
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        </svg>
+      </a>
+
+      {/* Resume/CV */}
+      <a 
+        href="/Resume.pdf" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className={`p-3 rounded-lg transition-all ${
+          isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
+        }`}
+        aria-label="Resume"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="28" 
+          height="28" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+      
     </div>
   );
 }
