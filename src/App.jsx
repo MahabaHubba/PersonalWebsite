@@ -252,7 +252,7 @@ export default function PersonalPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <h1 className={`text-2xl font-bold ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
-              Portfolio
+              Mohibul Haque
             </h1>
             <div className="flex items-center gap-8">
               {['about', 'experience', 'projects', 'skills'].map((section) => (
@@ -316,7 +316,7 @@ export default function PersonalPage() {
       <section id="about" className="min-h-screen flex items-center px-6 py-20">
         <div className="max-w-4xl mx-auto w-full">
           <h2 className={`text-3xl font-bold mb-8 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-            <span className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'} mr-2`}>01.</span>
+            
             About Me
           </h2>
           <div className={`rounded-xl p-8 ${isDark ? 'bg-slate-800/50' : 'bg-gray-50'}`}>
@@ -335,7 +335,7 @@ export default function PersonalPage() {
       <section id="experience" className="px-6 py-20">
         <div className="max-w-4xl mx-auto">
           <h2 className={`text-3xl font-bold mb-16 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-            <span className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'} mr-2`}>02.</span>
+           
             Experience
           </h2>
           
@@ -384,7 +384,7 @@ export default function PersonalPage() {
       <section id="projects" className="px-6 py-20">
         <div className="max-w-6xl mx-auto">
           <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-            <span className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'} mr-2`}>03.</span>
+            
             Projects
           </h2>
           
@@ -552,7 +552,7 @@ export default function PersonalPage() {
       <section id="skills" className="px-6 py-20">
         <div className="max-w-4xl mx-auto">
           <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-            <span className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'} mr-2`}>04.</span>
+            
             Skills & Technologies
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
