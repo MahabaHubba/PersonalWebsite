@@ -184,7 +184,7 @@ export default function PersonalPage() {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-white'} relative`}>
+    <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-white'} relative snap-y snap-mandatory overflow-y-scroll h-screen`}>
       {/* Spotlight effect */}
       <div 
         className="pointer-events-none fixed inset-0 z-30 transition duration-300"
@@ -282,11 +282,9 @@ export default function PersonalPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-6 pt-20">
+      <section className="min-h-screen flex items-center justify-center px-6 pt-20 snap-start snap-always">
         <div className="max-w-4xl fade-in-up">
-          <p className={`text-lg mb-4 ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
-            Hi, my name is
-          </p>
+          
           <h1 className={`text-6xl md:text-7xl font-bold mb-4 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
             Mohibul Haque
           </h1>
@@ -313,7 +311,7 @@ export default function PersonalPage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="min-h-screen flex items-center px-6 py-20">
+      <section id="about" className="min-h-screen flex items-center px-6 py-20 snap-start snap-always">
         <div className="max-w-4xl mx-auto w-full">
           <h2 className={`text-3xl font-bold mb-8 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
             
@@ -332,7 +330,7 @@ export default function PersonalPage() {
       </section>
 
       {/* Experience Timeline Section */}
-      <section id="experience" className="px-6 py-20">
+      <section id="experience" className="px-6 py-20 snap-start snap-always min-h-screen flex items-center">
         <div className="max-w-4xl mx-auto">
           <h2 className={`text-3xl font-bold mb-16 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
            
@@ -381,7 +379,7 @@ export default function PersonalPage() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="px-6 py-20">
+      <section id="projects" className="px-6 py-20 snap-start snap-always min-h-screen">
         <div className="max-w-6xl mx-auto">
           <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
             
@@ -549,7 +547,7 @@ export default function PersonalPage() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="px-6 py-20">
+      <section id="skills" className="px-6 py-20 snap-start snap-always min-h-screen flex items-center">
         <div className="max-w-4xl mx-auto">
           <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
             
