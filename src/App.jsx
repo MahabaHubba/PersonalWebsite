@@ -579,7 +579,7 @@ export default function PersonalPage() {
                 <div className="timeline-dot" style={{ top: '24px' }}></div>
                 
                 {/* Desktop: Alternating layout, Mobile: Left-aligned with padding */}
-                <div className={`md:${index % 2 === 0 ? 'pr-[55%]' : 'pl-[55%]'} pl-8 md:pl-0`}>
+                <div className={`pl-8 md:pl-0 ${index % 2 === 0 ? 'md:pr-[55%]' : 'md:pl-[55%]'}`}>
                   <div className={`rounded-xl p-6 ${
                     isDark ? 'bg-slate-800/50 hover:bg-slate-800' : 'bg-gray-50 hover:bg-gray-100'
                   } transition-all duration-300`}>
