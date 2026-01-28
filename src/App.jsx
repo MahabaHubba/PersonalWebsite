@@ -10,14 +10,18 @@ const experiences = [
     location: 'Sydney CBD',
     description: 'Developing full-stack applications and contributing to enterprise-level projects by leveraging AI-driven solutions, including Retrieval-Augmented Generation (RAG) and graph-based data models, to improve the efficiency of ad-hoc events.',
     responsibilities: [
-      'Designed and built scalable full-stack web applications using Java and Spring Boot',
-      'Migrated front-end codebases from JavaScript to TypeScript',
-      'Developed modern, responsive user interfaces using React',
-      'Implemented automated testing strategies using Jest',
-      'Utilised Python-based AI workflows for prompt engineering',
-      'Collaborated with cross-functional stakeholders in agile methodology',
-      'Maintained clean, readable code adhering to best practices'
-    ]
+  'Designed and built high-performance, scalable full-stack web applications using Java and Spring Boot, delivering low-latency REST APIs with optimized query handling and caching strategies',
+  'Improved API responsiveness through efficient endpoint design, asynchronous processing, and database indexing, ensuring fast and reliable data retrieval under load',
+  'Deployed applications using containerization and cloud-based environments, managing CI/CD pipelines for automated builds, testing, and production releases',
+  'Migrated front-end codebases from JavaScript to TypeScript to enhance type safety, maintainability, and developer productivity',
+  'Developed modern, responsive user interfaces using React, leveraging component-based architecture and reusable design patterns',
+  'Built UI components using libraries such as Bootstrap and Material UI to ensure consistent styling, accessibility, and cross-device responsiveness',
+  'Implemented automated testing strategies using Jest to validate API behavior, UI components, and regression scenarios',
+  'Utilised Python-based AI workflows for prompt engineering and intelligent automation features',
+  'Collaborated with cross-functional stakeholders in agile environments, contributing to sprint planning, reviews, and continuous improvement',
+  'Maintained clean, readable, and well-documented code adhering to industry best practices and SOLID principles'
+]
+
   }, 
   {
     id: 'exp-2',
@@ -27,14 +31,17 @@ const experiences = [
     location: 'Sydney CBD',
     description: 'Designing and delivering full-stack, enterprise-grade solutions, including the implementation of an agentic AI-powered chatbot within a PHP Laravel framework.',
     responsibilities: [
-      'Designed and developed a full-stack PHP Laravel application with AI chatbot',
-      'Containerised the application using Docker',
-      'Collaborated with senior engineers to debug and optimise performance',
-      'Integrated MySQL databases with external API calls',
-      'Implemented RAG and graph-based data models',
-      'Built efficient data access patterns',
-      'Improved sales team efficiency by approximately 15%'
-    ]
+  'Designed and developed a full-stack PHP Laravel application integrating an AI-powered chatbot, leveraging Laravel’s MVC architecture for clean separation of concerns and scalable feature development',
+  'Implemented Retrieval-Augmented Generation (RAG) pipelines and graph-based data models to enable context-aware, low-latency chatbot responses across structured and unstructured data sources',
+  'Integrated MySQL databases with external APIs, designing efficient relational schemas, optimized queries, and reliable data synchronization workflows',
+  'Built efficient data access patterns using repository and service layers to improve maintainability, performance, and testability',
+  'Developed responsive, user-centric interfaces using the Metronic UI framework, ensuring consistent UI/UX, accessibility, and rapid component-driven development',
+  'Containerised the application using Docker to ensure environment consistency across development, testing, and deployment',
+  'Collaborated closely with senior engineers to debug, profile, and optimize application performance across backend services and database interactions',
+  'Applied performance tuning techniques across API endpoints and database queries, improving system responsiveness and reliability under load',
+  'Delivered measurable business impact by streamlining internal workflows, improving sales team efficiency by approximately 15%'
+]
+
   }
 ];
 
@@ -117,9 +124,10 @@ export default function PersonalPage() {
   const [expandedProject, setExpandedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState({});
   const [activeSection, setActiveSection] = useState('hero');
-const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-const projectRefs = useRef({});
-const containerRef = useRef(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const projectRefs = useRef({});
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -131,47 +139,48 @@ const containerRef = useRef(null);
   }, []);
 
   useEffect(() => {
-  const container = containerRef.current;
-  if (!container) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-  const handleScroll = () => {
-    const sections = ['hero', 'about', 'experience', 'projects', 'skills'];
-    const containerScroll = container.scrollTop;
-    const containerHeight = container.clientHeight;
+    const handleScroll = () => {
+      const sections = ['hero', 'about', 'experience', 'projects', 'skills'];
+      const containerScroll = container.scrollTop;
+      const containerHeight = container.clientHeight;
 
-    for (const sectionId of sections) {
-      const element = sectionId === 'hero' 
-        ? container.querySelector('section:first-of-type')
-        : document.getElementById(sectionId);
-      
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        const elementTop = rect.top;
-        const elementBottom = rect.bottom;
+      for (const sectionId of sections) {
+        const element = sectionId === 'hero' 
+          ? container.querySelector('section:first-of-type')
+          : document.getElementById(sectionId);
         
-        // Check if section is in viewport (with some tolerance)
-        if (elementTop < containerHeight / 2 && elementBottom > containerHeight / 2) {
-          setActiveSection(sectionId);
-          break;
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementTop = rect.top;
+          const elementBottom = rect.bottom;
+          
+          if (elementTop < containerHeight / 2 && elementBottom > containerHeight / 2) {
+            setActiveSection(sectionId);
+            break;
+          }
         }
       }
-    }
-  };
+    };
 
-  container.addEventListener('scroll', handleScroll);
-  handleScroll(); // Initial check
-  
-  return () => container.removeEventListener('scroll', handleScroll);
-}, []);
+    container.addEventListener('scroll', handleScroll);
+    handleScroll();
+    
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (sectionId) => {
-  if (sectionId === 'hero') {
-    containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-    return;
-  }
-  const element = document.getElementById(sectionId);
-  element?.scrollIntoView({ behavior: 'smooth' });
-};
+    if (sectionId === 'hero') {
+      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      setMobileMenuOpen(false);
+      return;
+    }
+    const element = document.getElementById(sectionId);
+    element?.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
+  };
 
   const toggleProject = (projectId) => {
     const isExpanding = expandedProject !== projectId;
@@ -202,7 +211,7 @@ const containerRef = useRef(null);
   };
 
   return (
-      <div ref={containerRef} className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-white'} relative snap-y snap-mandatory overflow-y-scroll h-screen`}>
+    <div ref={containerRef} className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-white'} relative snap-y snap-mandatory overflow-y-scroll h-screen`}>
       {/* Spotlight effect */}
       <div 
         className="pointer-events-none fixed inset-0 z-30 transition duration-300"
@@ -225,25 +234,51 @@ const containerRef = useRef(null);
         .fade-in-up {
           animation: fadeInUp 0.6s ease-out;
         }
-        .timeline-line {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 2px;
-          height: 100%;
-          background: linear-gradient(to bottom, transparent, ${isDark ? '#4f46e5' : '#6366f1'}, transparent);
+        
+        /* Desktop timeline styles */
+        @media (min-width: 768px) {
+          .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, ${isDark ? '#4f46e5' : '#6366f1'}, transparent);
+          }
+          .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: ${isDark ? '#4f46e5' : '#6366f1'};
+            border: 3px solid ${isDark ? '#1e293b' : '#ffffff'};
+            z-index: 10;
+          }
         }
-        .timeline-dot {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          background: ${isDark ? '#4f46e5' : '#6366f1'};
-          border: 3px solid ${isDark ? '#1e293b' : '#ffffff'};
-          z-index: 10;
+        
+        /* Mobile timeline styles */
+        @media (max-width: 767px) {
+          .timeline-line {
+            position: absolute;
+            left: 8px;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, ${isDark ? '#4f46e5' : '#6366f1'}, transparent);
+          }
+          .timeline-dot {
+            position: absolute;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: ${isDark ? '#4f46e5' : '#6366f1'};
+            border: 3px solid ${isDark ? '#1e293b' : '#ffffff'};
+            z-index: 10;
+          }
         }
+        
         .nav-link {
           position: relative;
           transition: all 0.3s ease;
@@ -264,99 +299,212 @@ const containerRef = useRef(null);
       `}</style>
 
       {/* Fixed Navigation */}
-<nav className={`fixed top-0 w-full z-50 backdrop-blur-md ${
-  isDark ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-gray-200'
-} border-b`}>
-  <div className="max-w-7xl mx-auto px-6 py-4">
-    <div className="flex justify-between items-center">
-      <h1 className={`text-2xl font-bold ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
-        Mohibul Haque
-      </h1>
-      <div className="flex items-center gap-8">
-        {[
-          { id: 'hero', label: 'home' },
-          { id: 'about', label: 'about' },
-          { id: 'experience', label: 'experience' },
-          { id: 'projects', label: 'projects' },
-          { id: 'skills', label: 'skills' }
-        ].map((section) => (
-          <button
-            key={section.id}
-            onClick={() => scrollToSection(section.id)}
-            className={`nav-link capitalize ${
-              activeSection === section.id
-                ? isDark ? 'text-indigo-400' : 'text-indigo-600'
-                : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-gray-600 hover:text-gray-900'
-            } ${activeSection === section.id ? 'active' : ''}`}
-          >
-            {section.label}
-          </button>
-        ))}
-        
-        {/* Toggle Switch */}
-        <div className="relative">
-          <div 
-            onClick={() => setIsDark(!isDark)}
-            className={`relative w-16 h-8 rounded-full cursor-pointer transition-colors duration-300 ${
-              isDark ? 'bg-slate-700' : 'bg-gray-300'
-            }`}
-          >
-            {/* Sliding Button */}
-            <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300 flex items-center justify-center ${
-              isDark ? 'translate-x-8' : 'translate-x-0'
-            }`}>
-              {/* Icon inside the sliding button */}
-              {isDark ? (
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                  className="text-indigo-600"
+      <nav className={`fixed top-0 w-full z-50 backdrop-blur-md ${
+        isDark ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-gray-200'
+      } border-b`}>
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <h1 className={`text-2xl font-bold ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
+              Mohibul Haque
+            </h1>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              {[
+                { id: 'hero', label: 'home' },
+                { id: 'about', label: 'about' },
+                { id: 'experience', label: 'experience' },
+                { id: 'projects', label: 'projects' },
+                { id: 'skills', label: 'skills' }
+              ].map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className={`nav-link capitalize ${
+                    activeSection === section.id
+                      ? isDark ? 'text-indigo-400' : 'text-indigo-600'
+                      : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-gray-600 hover:text-gray-900'
+                  } ${activeSection === section.id ? 'active' : ''}`}
                 >
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-              ) : (
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                  className="text-yellow-500"
+                  {section.label}
+                </button>
+              ))}
+              
+              {/* Toggle Switch */}
+              <div className="relative">
+                <div 
+                  onClick={() => setIsDark(!isDark)}
+                  className={`relative w-16 h-8 rounded-full cursor-pointer transition-colors duration-300 ${
+                    isDark ? 'bg-slate-700' : 'bg-gray-300'
+                  }`}
                 >
-                  <circle cx="12" cy="12" r="5"/>
-                  <line x1="12" y1="1" x2="12" y2="3"/>
-                  <line x1="12" y1="21" x2="12" y2="23"/>
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                  <line x1="1" y1="12" x2="3" y2="12"/>
-                  <line x1="21" y1="12" x2="23" y2="12"/>
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                  <div className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300 flex items-center justify-center ${
+                    isDark ? 'translate-x-8' : 'translate-x-0'
+                  }`}>
+                    {isDark ? (
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="16" 
+                        height="16" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        className="text-indigo-600"
+                      >
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                      </svg>
+                    ) : (
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="16" 
+                        height="16" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        className="text-yellow-500"
+                      >
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Menu Button and Theme Toggle */}
+            <div className="md:hidden flex items-center gap-4">
+              {/* Mobile Theme Toggle */}
+              <div className="relative">
+                <div 
+                  onClick={() => setIsDark(!isDark)}
+                  className={`relative w-14 h-7 rounded-full cursor-pointer transition-colors duration-300 ${
+                    isDark ? 'bg-slate-700' : 'bg-gray-300'
+                  }`}
+                >
+                  <div className={`absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300 flex items-center justify-center ${
+                    isDark ? 'translate-x-7' : 'translate-x-0'
+                  }`}>
+                    {isDark ? (
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="14" 
+                        height="14" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        className="text-indigo-600"
+                      >
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                      </svg>
+                    ) : (
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="14" 
+                        height="14" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        className="text-yellow-500"
+                      >
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Hamburger Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`p-2 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}
+                aria-label="Toggle menu"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {mobileMenuOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  )}
                 </svg>
-              )}
+              </button>
             </div>
           </div>
+
+          {/* Mobile Menu Dropdown */}
+          {mobileMenuOpen && (
+            <div className={`md:hidden mt-4 pb-4 border-t ${isDark ? 'border-slate-800' : 'border-gray-200'}`}>
+              <div className="flex flex-col gap-2 pt-4">
+                {[
+                  { id: 'hero', label: 'home' },
+                  { id: 'about', label: 'about' },
+                  { id: 'experience', label: 'experience' },
+                  { id: 'projects', label: 'projects' },
+                  { id: 'skills', label: 'skills' }
+                ].map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => scrollToSection(section.id)}
+                    className={`text-left px-4 py-2 rounded capitalize ${
+                      activeSection === section.id
+                        ? isDark ? 'bg-slate-800 text-indigo-400' : 'bg-gray-100 text-indigo-600'
+                        : isDark ? 'text-slate-400 hover:bg-slate-800/50' : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {section.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      </div>
-    </div>
-  </div>
-</nav>
+      </nav>
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-6 pt-20 snap-start snap-always">
         <div className="max-w-4xl fade-in-up">
-          
           <h1 className={`text-6xl md:text-7xl font-bold mb-4 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
             Mohibul Haque
           </h1>
@@ -386,44 +534,40 @@ const containerRef = useRef(null);
       <section id="about" className="min-h-screen flex items-center px-6 py-20 snap-start snap-always">
         <div className="max-w-4xl mx-auto w-full">
           <h2 className={`text-3xl font-bold mb-8 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-            
             About Me
           </h2>
           <div className={`rounded-xl p-8 ${isDark ? 'bg-slate-800/50' : 'bg-gray-50'}`}>
             <p className={`text-lg w-full mb-8 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
-
-  I am a software engineer with hands-on experience designing, developing, and deploying full-stack and 
-  cloud-based applications using Java Spring (Spring Boot, REST APIs), React, and the MERN stack. My work 
-  spans building scalable backend services, implementing secure authentication and authorization flows, 
-  and integrating relational and NoSQL databases such as MySQL and MongoDB using ORM frameworks like 
-  Hibernate and Mongoose. I have experience working with modern frontend architectures, leveraging React 
-  hooks, component-based design, state management, and API-driven UI development using Axios and GraphQL.
-  
-  <br /><br />
-  
-  On the infrastructure side, I have deployed applications to cloud environments, utilizing services such 
-  as AWS and GCP, containerization with Docker, and CI/CD pipelines to automate testing and delivery. I am 
-  familiar with microservices-oriented design, RESTful communication, and observability tooling including 
-  Prometheus, Grafana, and Splunk to monitor system performance and application health.
-  
-  <br /><br />
-  
-  With a professional background as an Exercise Physiologist, I bring a strong analytical mindset, 
-  evidence-based decision making, and stakeholder-focused communication into software development. This 
-  cross-disciplinary experience enables me to translate complex requirements into reliable technical 
-  solutions, optimize systems based on measurable outcomes, and collaborate effectively within 
-  cross-functional teams to deliver maintainable, high-quality software.
-</p>
-
+              I am a software engineer with hands-on experience designing, developing, and deploying full-stack and 
+              cloud-based applications using Java Spring (Spring Boot, REST APIs), React, and the MERN stack. My work 
+              spans building scalable backend services, implementing secure authentication and authorization flows, 
+              and integrating relational and NoSQL databases such as MySQL and MongoDB using ORM frameworks like 
+              Hibernate and Mongoose. I have experience working with modern frontend architectures, leveraging React 
+              hooks, component-based design, state management, and API-driven UI development using Axios and GraphQL.
+              
+              <br /><br />
+              
+              On the infrastructure side, I have deployed applications to cloud environments, utilizing services such 
+              as AWS and GCP, containerization with Docker, and CI/CD pipelines to automate testing and delivery. I am 
+              familiar with microservices-oriented design, RESTful communication, and observability tooling including 
+              Prometheus, Grafana, and Splunk to monitor system performance and application health.
+              
+              <br /><br />
+              
+              With a professional background as an Exercise Physiologist, I bring a strong analytical mindset, 
+              evidence-based decision making, and stakeholder-focused communication into software development. This 
+              cross-disciplinary experience enables me to translate complex requirements into reliable technical 
+              solutions, optimize systems based on measurable outcomes, and collaborate effectively within 
+              cross-functional teams to deliver maintainable, high-quality software.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Experience Timeline Section */}
       <section id="experience" className="px-6 py-20 snap-start snap-always min-h-screen flex items-center">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto w-full">
           <h2 className={`text-3xl font-bold mb-16 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-           
             Experience
           </h2>
           
@@ -434,7 +578,8 @@ const containerRef = useRef(null);
               <div key={exp.id} className="relative mb-24 last:mb-0">
                 <div className="timeline-dot" style={{ top: '24px' }}></div>
                 
-                <div className={`${index % 2 === 0 ? 'md:pr-[55%]' : 'md:pl-[55%]'}`}>
+                {/* Desktop: Alternating layout, Mobile: Left-aligned with padding */}
+                <div className={`pl-8 md:pl-0 ${index % 2 === 0 ? 'md:pr-[55%]' : 'md:pl-[55%]'}`}>
                   <div className={`rounded-xl p-6 ${
                     isDark ? 'bg-slate-800/50 hover:bg-slate-800' : 'bg-gray-50 hover:bg-gray-100'
                   } transition-all duration-300`}>
@@ -451,7 +596,7 @@ const containerRef = useRef(null);
                       {exp.description}
                     </p>
                     <ul className="space-y-2">
-                      {exp.responsibilities.slice(0, 3).map((resp, i) => (
+                      {exp.responsibilities.slice(0, 10).map((resp, i) => (
                         <li key={i} className={`flex items-start gap-2 text-sm ${
                           isDark ? 'text-slate-400' : 'text-gray-600'
                         }`}>
@@ -472,7 +617,6 @@ const containerRef = useRef(null);
       <section id="projects" className="px-6 py-20 snap-start snap-always min-h-screen">
         <div className="max-w-6xl mx-auto">
           <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-            
             Projects
           </h2>
           
@@ -636,102 +780,100 @@ const containerRef = useRef(null);
         </div>
       </section>
 
-     {/* Skills Section */}
-<section id="skills" className="px-6 py-20 snap-start snap-always min-h-screen flex items-center">
-  <div className="max-w-4xl mx-auto w-full">
-    <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
-      Skills & Technologies
-    </h2>
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-      {['Java', 'Javascript', 'PHP', 'Python', 'SQL', 'HTML', 'CSS', 'PostgreSQL', 'MongoDB', 'UNIX', 'Git', 'Render','AWS', 'Cloudflare', 'React', 'Spring', 'Laravel', 'Splunk', 'Prometheus', 'Grafana'].map((skill) => (
-        <div 
-          key={skill}
-          className={`p-4 rounded-lg text-center ${
-            isDark ? 'bg-slate-800/50 text-slate-300' : 'bg-gray-50 text-gray-700'
-          }`}
-        >
-          {skill}
+      {/* Skills Section */}
+      <section id="skills" className="px-6 py-20 snap-start snap-always min-h-screen flex items-center">
+        <div className="max-w-4xl mx-auto w-full">
+          <h2 className={`text-3xl font-bold mb-12 ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
+            Skills & Technologies
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+            {['Java', 'Javascript', 'PHP', 'Python', 'SQL', 'HTML', 'CSS', 'PostgreSQL', 'MongoDB', 'UNIX', 'Git', 'Render','AWS', 'Cloudflare', 'React', 'Spring', 'Laravel', 'Splunk', 'Prometheus', 'Grafana'].map((skill) => (
+              <div 
+                key={skill}
+                className={`p-4 rounded-lg text-center ${
+                  isDark ? 'bg-slate-800/50 text-slate-300' : 'bg-gray-50 text-gray-700'
+                }`}
+              >
+                {skill}
+              </div>
+            ))}
+          </div>
+          
+          {/* Social Links */}
+          <div className="flex justify-center items-center gap-6 mt-12">
+            {/* GitHub */}
+            <a 
+              href="https://github.com/MahabaHubba" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={`p-3 rounded-lg transition-all ${
+                isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
+              }`}
+              aria-label="GitHub"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="28" 
+                height="28" 
+                viewBox="0 0 24 24" 
+                fill="currentColor"
+              >
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </a>
+
+            {/* LinkedIn */}
+            <a 
+              href="https://www.linkedin.com/in/mohihaque/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={`p-3 rounded-lg transition-all ${
+                isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
+              }`}
+              aria-label="LinkedIn"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="28" 
+                height="28" 
+                viewBox="0 0 24 24" 
+                fill="currentColor"
+              >
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+
+            {/* Resume/CV */}
+            <a 
+              href="/Resume.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={`p-3 rounded-lg transition-all ${
+                isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
+              }`}
+              aria-label="Resume"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="28" 
+                height="28" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </a>
+          </div>
         </div>
-      ))}
-    </div>
-    
-    {/* Social Links */}
-    <div className="flex justify-center items-center gap-6 mt-12">
-      {/* GitHub */}
-      <a 
-        href="https://github.com/MahabaHubba" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className={`p-3 rounded-lg transition-all ${
-          isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
-        }`}
-        aria-label="GitHub"
-      >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="28" 
-          height="28" 
-          viewBox="0 0 24 24" 
-          fill="currentColor"
-        >
-          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-        </svg>
-      </a>
-
-      {/* LinkedIn */}
-      <a 
-        href="https://www.linkedin.com/in/mohihaque/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className={`p-3 rounded-lg transition-all ${
-          isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
-        }`}
-        aria-label="LinkedIn"
-      >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="28" 
-          height="28" 
-          viewBox="0 0 24 24" 
-          fill="currentColor"
-        >
-          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-        </svg>
-      </a>
-
-      {/* Resume/CV */}
-      <a 
-        href="/Resume.pdf" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className={`p-3 rounded-lg transition-all ${
-          isDark ? 'hover:bg-slate-800 text-slate-400 hover:text-indigo-400' : 'hover:bg-gray-100 text-gray-600 hover:text-indigo-600'
-        }`}
-        aria-label="Resume"
-      >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="28" 
-          height="28" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
-        >
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-          <polyline points="10 9 9 9 8 9"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-      
+      </section>
     </div>
   );
 }
