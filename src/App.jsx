@@ -27,7 +27,7 @@ const experiences = [
     id: 'exp-2',
     company: 'Aquion',
     position: 'Software Developer',
-    duration: 'January 2025 - June 2025',
+    duration: 'May 2024 - June 2025',
     location: 'Sydney CBD',
     description: 'Designing and delivering full-stack, enterprise-grade solutions, including the implementation of an agentic AI-powered chatbot within a PHP Laravel framework.',
     responsibilities: [
