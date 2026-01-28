@@ -10,14 +10,18 @@ const experiences = [
     location: 'Sydney CBD',
     description: 'Developing full-stack applications and contributing to enterprise-level projects by leveraging AI-driven solutions, including Retrieval-Augmented Generation (RAG) and graph-based data models, to improve the efficiency of ad-hoc events.',
     responsibilities: [
-      'Designed and built scalable full-stack web applications using Java and Spring Boot',
-      'Migrated front-end codebases from JavaScript to TypeScript',
-      'Developed modern, responsive user interfaces using React',
-      'Implemented automated testing strategies using Jest',
-      'Utilised Python-based AI workflows for prompt engineering',
-      'Collaborated with cross-functional stakeholders in agile methodology',
-      'Maintained clean, readable code adhering to best practices'
-    ]
+  'Designed and built high-performance, scalable full-stack web applications using Java and Spring Boot, delivering low-latency REST APIs with optimized query handling and caching strategies',
+  'Improved API responsiveness through efficient endpoint design, asynchronous processing, and database indexing, ensuring fast and reliable data retrieval under load',
+  'Deployed applications using containerization and cloud-based environments, managing CI/CD pipelines for automated builds, testing, and production releases',
+  'Migrated front-end codebases from JavaScript to TypeScript to enhance type safety, maintainability, and developer productivity',
+  'Developed modern, responsive user interfaces using React, leveraging component-based architecture and reusable design patterns',
+  'Built UI components using libraries such as Bootstrap and Material UI to ensure consistent styling, accessibility, and cross-device responsiveness',
+  'Implemented automated testing strategies using Jest to validate API behavior, UI components, and regression scenarios',
+  'Utilised Python-based AI workflows for prompt engineering and intelligent automation features',
+  'Collaborated with cross-functional stakeholders in agile environments, contributing to sprint planning, reviews, and continuous improvement',
+  'Maintained clean, readable, and well-documented code adhering to industry best practices and SOLID principles'
+]
+
   }, 
   {
     id: 'exp-2',
@@ -27,14 +31,17 @@ const experiences = [
     location: 'Sydney CBD',
     description: 'Designing and delivering full-stack, enterprise-grade solutions, including the implementation of an agentic AI-powered chatbot within a PHP Laravel framework.',
     responsibilities: [
-      'Designed and developed a full-stack PHP Laravel application with AI chatbot',
-      'Containerised the application using Docker',
-      'Collaborated with senior engineers to debug and optimise performance',
-      'Integrated MySQL databases with external API calls',
-      'Implemented RAG and graph-based data models',
-      'Built efficient data access patterns',
-      'Improved sales team efficiency by approximately 15%'
-    ]
+  'Designed and developed a full-stack PHP Laravel application integrating an AI-powered chatbot, leveraging Laravel’s MVC architecture for clean separation of concerns and scalable feature development',
+  'Implemented Retrieval-Augmented Generation (RAG) pipelines and graph-based data models to enable context-aware, low-latency chatbot responses across structured and unstructured data sources',
+  'Integrated MySQL databases with external APIs, designing efficient relational schemas, optimized queries, and reliable data synchronization workflows',
+  'Built efficient data access patterns using repository and service layers to improve maintainability, performance, and testability',
+  'Developed responsive, user-centric interfaces using the Metronic UI framework, ensuring consistent UI/UX, accessibility, and rapid component-driven development',
+  'Containerised the application using Docker to ensure environment consistency across development, testing, and deployment',
+  'Collaborated closely with senior engineers to debug, profile, and optimize application performance across backend services and database interactions',
+  'Applied performance tuning techniques across API endpoints and database queries, improving system responsiveness and reliability under load',
+  'Delivered measurable business impact by streamlining internal workflows, improving sales team efficiency by approximately 15%'
+]
+
   }
 ];
 
@@ -589,7 +596,7 @@ export default function PersonalPage() {
                       {exp.description}
                     </p>
                     <ul className="space-y-2">
-                      {exp.responsibilities.slice(0, 3).map((resp, i) => (
+                      {exp.responsibilities.slice(0, 10).map((resp, i) => (
                         <li key={i} className={`flex items-start gap-2 text-sm ${
                           isDark ? 'text-slate-400' : 'text-gray-600'
                         }`}>
